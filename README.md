@@ -65,3 +65,4 @@ There are two different [Coordinates](/Assets/Scripts/BoardSystem/Board/Coordina
  ...
 # HexAutoBattler
 # HexAutoBattler
+# HexAutoBattler
