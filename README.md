@@ -64,3 +64,4 @@ There are two different [Coordinates](/Assets/Scripts/BoardSystem/Board/Coordina
 3. How to change tiles;
  ...
 # HexAutoBattler
+# HexAutoBattler
