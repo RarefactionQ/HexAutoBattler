@@ -1,16 +1,17 @@
 ﻿<Properties StartupConfiguration="{F35EF343-D63A-E55C-2404-94F4DE4EC404}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GameLogic/BroomShapeGraph.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GameControllers/BroomBuilderAdapter.cs">
     <Files>
       <File FileName="Assets/Scripts/GameControllers/GameController.cs" Line="13" Column="12" />
-      <File FileName="Assets/Scripts/GameControllers/ArmoryController.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/GameLogic/GameStateManager.cs" Line="116" Column="18" />
+      <File FileName="Assets/Scripts/GameControllers/ArmoryController.cs" />
+      <File FileName="Assets/Scripts/GameLogic/GameStateManager.cs" />
       <File FileName="Assets/Scripts/GameControllers/UIObjects.cs" />
       <File FileName="Assets/Scripts/GameControllers/BattleController.cs" />
       <File FileName="Assets/Scripts/GameControllers/ResearchController.cs" />
-      <File FileName="Assets/Scripts/GameControllers/BroomBuilderController.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/HexSystemScripts/BoardSystem/Coordinates/Hex.cs" Line="7" Column="36" />
-      <File FileName="Assets/Scripts/GameLogic/Shape.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/GameLogic/BroomShapeGraph.cs" Line="17" Column="27" />
+      <File FileName="Assets/Scripts/GameControllers/BroomBuilderController.cs" Line="193" Column="14" />
+      <File FileName="Assets/Scripts/HexSystemScripts/BoardSystem/Coordinates/Hex.cs" />
+      <File FileName="Assets/Scripts/GameLogic/Shape.cs" />
+      <File FileName="Assets/Scripts/GameLogic/BroomShapeGraph.cs" />
+      <File FileName="Assets/BroomBuilderAdapter.cs" Line="12" Column="3" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -20,9 +21,7 @@
               <Node name="Prefabs" expanded="True" />
               <Node name="Scripts" expanded="True">
                 <Node name="GameControllers" expanded="True" />
-                <Node name="GameLogic" expanded="True">
-                  <Node name="BroomShapeGraph.cs" selected="True" />
-                </Node>
+                <Node name="GameLogic" expanded="True" />
                 <Node name="HexSystemScripts" expanded="True">
                   <Node name="BoardSystem" expanded="True">
                     <Node name="Coordinates" expanded="True" />
@@ -40,7 +39,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="dd672110-2f60-4bd0-9560-ea3678101491" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="1d14d4dc-5e70-4db2-b0cf-ec1cc4f81122" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

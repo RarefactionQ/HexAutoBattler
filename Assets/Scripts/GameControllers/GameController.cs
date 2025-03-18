@@ -59,19 +59,20 @@ public class GameController : MonoBehaviour
 
     }
 
-    // Figure out what is clicked on
-
-    // Huge Tree of if statements
-    // What should happen when a gameObject is clicked
-    // UIController basically just holds all of the Unity GameObjects
-    // It can tell you what object was clicked
-    // They are hidden and shown rather than created
-    // tell GameState that it happened (also massive)
-    // figure out what changed
-
-    // Call the various controllers which ask ONLY FOR WHAT THEY NEED FROM THE GAME STATE
-
-
+    
 
 
 }
+
+// Figure out what is clicked on
+
+// Huge Tree of if statements
+// What should happen when a gameObject is clicked
+// UIController basically just holds all of the Unity GameObjects
+// It can tell you what object was clicked
+// They are hidden and shown rather than created
+// tell GameState that it happened (also massive)
+// figure out what changed
+
+// Call the various controllers which ask ONLY FOR WHAT THEY NEED FROM THE GAME STATE
+
