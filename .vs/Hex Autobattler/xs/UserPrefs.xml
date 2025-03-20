@@ -1,17 +1,22 @@
 ﻿<Properties StartupConfiguration="{F35EF343-D63A-E55C-2404-94F4DE4EC404}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GameControllers/BroomBuilderAdapter.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/HexSystemScripts/Ui/Board/UiBoardDebug.cs">
     <Files>
-      <File FileName="Assets/Scripts/GameControllers/GameController.cs" Line="13" Column="12" />
-      <File FileName="Assets/Scripts/GameControllers/ArmoryController.cs" />
-      <File FileName="Assets/Scripts/GameLogic/GameStateManager.cs" />
+      <File FileName="Assets/Scripts/GameControllers/GameController.cs" Line="25" Column="1" />
+      <File FileName="Assets/Scripts/GameControllers/ArmoryController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/GameLogic/GameStateManager.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/GameControllers/UIObjects.cs" />
-      <File FileName="Assets/Scripts/GameControllers/BattleController.cs" />
+      <File FileName="Assets/Scripts/GameControllers/BattleController.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/GameControllers/ResearchController.cs" />
-      <File FileName="Assets/Scripts/GameControllers/BroomBuilderController.cs" Line="193" Column="14" />
+      <File FileName="Assets/Scripts/GameControllers/BroomBuilderController.cs" Line="148" Column="39" />
       <File FileName="Assets/Scripts/HexSystemScripts/BoardSystem/Coordinates/Hex.cs" />
       <File FileName="Assets/Scripts/GameLogic/Shape.cs" />
       <File FileName="Assets/Scripts/GameLogic/BroomShapeGraph.cs" />
-      <File FileName="Assets/BroomBuilderAdapter.cs" Line="12" Column="3" />
+      <File FileName="Assets/Scripts/GameLogic/Broom.cs" />
+      <File FileName="Assets/Scripts/HexSystemScripts/Ui/Board/UiBoardHightlight.cs" Line="9" Column="18" />
+      <File FileName="Assets/Scripts/GameControllers/BroomBuilderAdapter.cs" Line="90" Column="1" />
+      <File FileName="Assets/Scripts/GameControllers/BroomBuilderTestUI.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/GameControllers/HexTilePrefabCreator.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/HexSystemScripts/Ui/Board/UiBoardDebug.cs" Line="28" Column="45" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -23,8 +28,10 @@
                 <Node name="GameControllers" expanded="True" />
                 <Node name="GameLogic" expanded="True" />
                 <Node name="HexSystemScripts" expanded="True">
-                  <Node name="BoardSystem" expanded="True">
-                    <Node name="Coordinates" expanded="True" />
+                  <Node name="Ui" expanded="True">
+                    <Node name="Board" expanded="True">
+                      <Node name="UiBoardDebug.cs" selected="True" />
+                    </Node>
                   </Node>
                 </Node>
               </Node>
@@ -33,6 +40,11 @@
               </Node>
             </Node>
           </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.UnitTesting.TestPad">
+        <State name="__root__">
+          <Node name="Unity" expanded="True" selected="True" />
         </State>
       </Pad>
     </Pads>

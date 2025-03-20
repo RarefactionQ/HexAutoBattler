@@ -9,11 +9,13 @@ public class BroomBuilderController : MonoBehaviour
     [SerializeField] private BroomBuilderAdapter builderAdapter;
     [SerializeField] private Camera builderCamera;
 
-    private BroomFrame selectedFrame;
+    // Test glyphs and frame
+    private BroomFrame testFrame;
+    private List<Glyph> testGlyphs = new List<Glyph>();
     private Glyph selectedGlyph;
     private bool isPlacingGlyph = false;
-    private List<Glyph> placedGlyphs = new List<Glyph>();
 
+    // Constructor used by the GameStateManager
     public BroomBuilderController(UIObjects objs)
     {
         uiObjects = objs;
@@ -31,6 +33,17 @@ public class BroomBuilderController : MonoBehaviour
         {
             builderCamera = Camera.main;
         }
+
+        CreateTestObjects();
+    }
+
+    private void Start()
+    {
+        // Initialize the board with the test frame when the scene starts
+        if (testFrame != null && builderAdapter != null)
+        {
+            builderAdapter.SetupForBroomFrame(testFrame);
+        }
     }
 
     private void Update()
@@ -46,7 +59,7 @@ public class BroomBuilderController : MonoBehaviour
             // Handle rotation with right click
             if (Input.GetMouseButtonDown(1))
             {
-                handleRotateGlyphClicked();
+                HandleRotateGlyph();
             }
         }
     }
@@ -58,24 +71,14 @@ public class BroomBuilderController : MonoBehaviour
         return builderCamera.ScreenToWorldPoint(mousePos);
     }
 
-    public void handlePickBroomFrameClicked()
+    // Create test objects for development
+    private void CreateTestObjects()
     {
-        // Show frame selection UI
-        // For now, we'll just use a test frame
-        selectedFrame = CreateTestBroomFrame();
-
-        // Initialize the builder with this frame
-        builderAdapter.SetupForBroomFrame(selectedFrame);
-
-        // Clear any previously placed glyphs
-        placedGlyphs.Clear();
-    }
-
-    private BroomFrame CreateTestBroomFrame()
-    {
-        // Create a simple hexagonal frame for testing
-        Hex[] frameHexes = new Hex[]
+        try
         {
+            // Create a simple hexagonal frame for testing
+            Hex[] frameHexes = new Hex[]
+            {
             new Hex(0, 0, 0),
             new Hex(1, -1, 0),
             new Hex(1, 0, -1),
@@ -83,98 +86,113 @@ public class BroomBuilderController : MonoBehaviour
             new Hex(-1, 1, 0),
             new Hex(-1, 0, 1),
             new Hex(0, -1, 1)
-        };
+            };
 
-        Shape frameShape = new Shape(frameHexes);
+            // Verify the frameHexes array is valid
+            if (frameHexes == null || frameHexes.Length == 0)
+            {
+                Debug.LogError("Failed to create frameHexes array");
+                return;
+            }
 
-        // light, medium, heavy weights, flux, summon cost, speed, agility, durability, cost, shape
-        return new BroomFrame(10, 15, 20, 100, 50, 5, 3, 10, 100, frameShape);
-    }
+            Shape frameShape = new Shape(frameHexes);
+            if (frameShape == null)
+            {
+                Debug.LogError("Failed to create frameShape");
+                return;
+            }
 
-    public void handlePickGlyphClicked()
-    {
-        // Show glyph selection UI
-        // For now, we'll just use a test glyph
-        selectedGlyph = CreateTestGlyph();
+            // light, medium, heavy weights, flux, summon cost, speed, agility, durability, cost, shape
+            testFrame = new BroomFrame(10, 15, 20, 100, 50, 5, 3, 10, 100, frameShape);
+            if (testFrame == null)
+            {
+                Debug.LogError("Failed to create testFrame");
+                return;
+            }
 
-        // Tell the adapter about the selected glyph
-        builderAdapter.SetSelectedGlyph(selectedGlyph);
+            // Initialize the list if it's null
+            if (testGlyphs == null)
+            {
+                testGlyphs = new List<Glyph>();
+            }
 
-        // Enter placement mode
-        isPlacingGlyph = true;
-    }
+            // Create test glyph shapes
+            Hex[] lShapeHexes = new Hex[] { new Hex(0, 0, 0), new Hex(1, -1, 0), new Hex(0, -1, 1) };
+            Hex[] lineShapeHexes = new Hex[] { new Hex(0, 0, 0), new Hex(1, -1, 0), new Hex(2, -2, 0) };
+            Hex[] triangleShapeHexes = new Hex[] { new Hex(0, 0, 0), new Hex(1, -1, 0), new Hex(1, 0, -1) };
 
-    private Glyph CreateTestGlyph()
-    {
-        // Create a simple glyph for testing (L shape)
-        Hex[] glyphHexes = new Hex[]
+            // Create a basic stat block
+            int[] statValues = new int[] { 1, 2, 1, 0, 0, 0, 0, 0 };
+            StatBlock stats = new StatBlock(statValues);
+
+            // Create and add glyphs to the list
+            try
+            {
+                testGlyphs.Add(new Glyph(lShapeHexes, stats, 5, 20, 3));
+                testGlyphs.Add(new Glyph(lineShapeHexes, stats, 5, 20, 3));
+                testGlyphs.Add(new Glyph(triangleShapeHexes, stats, 5, 20, 3));
+
+                Debug.Log("Successfully created test objects with " + testGlyphs.Count + " glyphs");
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("Error creating glyphs: " + e.Message);
+            }
+        }
+        catch (System.Exception e)
         {
-            new Hex(0, 0, 0),
-            new Hex(1, -1, 0),
-            new Hex(0, -1, 1)
-        };
-
-        StatBlock stats = new StatBlock(new[] { 1, 2, 1, 0, 0, 0, 0, 0 });
-
-        // Return a new Glyph with the given shape, stats, and some arbitrary values
-        return new Glyph(glyphHexes, stats, 5, 20, 3);
+            Debug.LogError("Error in CreateTestObjects: " + e.Message + "\n" + e.StackTrace);
+        }
     }
 
-    public void handleRotateGlyphClicked() // This is right click vs. left click for everything else
+    // Public methods to be called by UI buttons
+
+    public void HandlePickBroomFrame()
+    {
+        if (testFrame != null && builderAdapter != null)
+        {
+            builderAdapter.SetupForBroomFrame(testFrame);
+            Debug.Log("Selected broom frame");
+        }
+    }
+
+    public void HandlePickGlyph(int glyphIndex = 0)
+    {
+        if (testGlyphs.Count > 0 && glyphIndex < testGlyphs.Count)
+        {
+            selectedGlyph = testGlyphs[glyphIndex];
+            builderAdapter.SetSelectedGlyph(selectedGlyph);
+            isPlacingGlyph = true;
+            Debug.Log("Selected glyph: " + glyphIndex);
+        }
+    }
+
+    public void HandleRotateGlyph()
     {
         if (selectedGlyph != null)
         {
-            // Tell the adapter to rotate the glyph
             builderAdapter.RotateSelectedGlyph();
+            Debug.Log("Rotated glyph");
         }
     }
 
-    public void handlePlaceGlyphClicked()
+    public void HandleFinishBroom()
     {
-        // Placing is now handled by the adapter through the UiTileMapInputHandler
-        // We just need to reset our state when placement occurs
-
-        // The adapter will create a new glyph when placement succeeds
-        // We can check if the selectedGlyph was reset to null by the adapter
-        if (selectedGlyph == null)
-        {
-            isPlacingGlyph = false;
-        }
-    }
-
-    public void handleCreateBroomClicked()
-    {
-        // Get the finalized broom from the adapter
         Broom newBroom = builderAdapter.FinalizeBroom();
-
         if (newBroom != null)
         {
-            // Here you would add the broom to the player's inventory
-            // For now, just log the creation
-            Debug.Log("Created new broom with glyphs");
-
-            // Reset the builder
-            selectedFrame = null;
-            selectedGlyph = null;
-            isPlacingGlyph = false;
-
-            // Go back to the armory
-            handleBackToArmoryClicked();
+            Debug.Log("Broom created successfully with " + newBroom.GetGlyphCount() + " glyphs");
         }
         else
         {
-            Debug.Log("Cannot create broom - need a frame and at least one glyph");
+            Debug.Log("Failed to create broom");
         }
     }
 
-    public void handleBackToArmoryClicked()
+    public void HandleBackToArmory()
     {
-        // Clean up
-        selectedFrame = null;
         selectedGlyph = null;
         isPlacingGlyph = false;
-
-        // Switch to armory view
         uiObjects.turnOffBroomBuilderView();
         uiObjects.turnOnArmoryView();
     }

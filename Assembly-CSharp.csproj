@@ -68,6 +68,7 @@
     <Compile Include="Assets\Scripts\GameControllers\BattleController.cs" />
     <Compile Include="Assets\Scripts\GameControllers\BroomBuilderAdapter.cs" />
     <Compile Include="Assets\Scripts\GameControllers\BroomBuilderController.cs" />
+    <Compile Include="Assets\Scripts\GameControllers\BroomBuilderTestUI.cs" />
     <Compile Include="Assets\Scripts\GameControllers\GameController.cs" />
     <Compile Include="Assets\Scripts\GameControllers\HexTilePrefabCreator.cs" />
     <Compile Include="Assets\Scripts\GameControllers\ResearchController.cs" />

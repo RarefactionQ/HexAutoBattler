@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using HexBoardGame.Runtime;
 using HexBoardGame.Runtime.GameBoard;
-using HexBoardGame.UI; // For UiTileMapInputHandler and UiHoverParticleSystem
-using HexBoardGame.SharedData; // For HexagonalBoardDataShape
+using HexBoardGame.UI;
+using HexBoardGame.SharedData;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
 
-// Add this to the HexBoard GameObject
+// This class handles the interaction between the UI and the game logic
+// for the broom building mechanic
 public class BroomBuilderAdapter : MonoBehaviour
 {
     [SerializeField] private BoardController boardController;
@@ -50,10 +51,26 @@ public class BroomBuilderAdapter : MonoBehaviour
         CreateTilesAtRuntime();
 
         // Subscribe to events
-        inputHandler.OnClickTile += HandleTileClick;
+        if (inputHandler != null)
+        {
+            inputHandler.OnClickTile += HandleTileClick;
+            Debug.Log("Subscribed to tile click events");
+        }
+        else
+        {
+            Debug.LogError("Missing inputHandler reference!");
+        }
 
         // This will help us know when the board is ready
-        boardController.OnCreateBoard += OnBoardCreated;
+        if (boardController != null)
+        {
+            boardController.OnCreateBoard += OnBoardCreated;
+            Debug.Log("Subscribed to board creation events");
+        }
+        else
+        {
+            Debug.LogError("Missing boardController reference!");
+        }
     }
 
     private void CreateTilesAtRuntime()
@@ -70,6 +87,8 @@ public class BroomBuilderAdapter : MonoBehaviour
 
         if (invalidTile == null)
             invalidTile = CreateColoredTile(invalidColor);
+
+        Debug.Log("Created runtime tiles");
     }
 
     private TileBase CreateColoredTile(Color color)
@@ -113,23 +132,45 @@ public class BroomBuilderAdapter : MonoBehaviour
     // Call this to initialize the board with a broom frame
     public void SetupForBroomFrame(BroomFrame frame)
     {
+        if (frame == null)
+        {
+            Debug.LogError("Attempted to set up with a null frame!");
+            return;
+        }
+
         currentFrame = frame;
         shapeGraph = new BroomShapeGraph(frame.getShape());
         placedGlyphs.Clear();
 
+        Debug.Log("Setting up board for broom frame");
+
         // Tell the board controller to create a hex grid of appropriate size
-        // You can use one of your existing board shapes
         HexagonalBoardDataShape hexShape = ScriptableObject.CreateInstance<HexagonalBoardDataShape>();
         hexShape.radius = 3; // Size that fits your frame
-        boardController.SetBoarDataAndCreate(hexShape);
+
+        if (boardController != null)
+        {
+            boardController.SetBoarDataAndCreate(hexShape);
+        }
+        else
+        {
+            Debug.LogError("Cannot create board - boardController is null");
+        }
 
         // Visuals will be updated via the OnBoardCreated callback
     }
 
     private void UpdateBoardVisuals()
     {
+        if (tilemap == null)
+        {
+            Debug.LogError("Tilemap is null when trying to update visuals");
+            return;
+        }
+
         // Clear tilemap first
         tilemap.ClearAllTiles();
+        Debug.Log("Updating board visuals");
 
         // Set tiles based on frame shape
         Shape frameShape = currentFrame.getShape();
@@ -154,7 +195,7 @@ public class BroomBuilderAdapter : MonoBehaviour
             if (isInFrame)
             {
                 // Check if occupied by a glyph
-                bool isOccupied = !shapeGraph.willItFit(new Shape(new[] { hex }));
+                bool isOccupied = shapeGraph != null && !shapeGraph.willItFit(new Shape(new[] { hex }));
 
                 // Set appropriate tile
                 tilemap.SetTile(cell, isOccupied ? occupiedTile : availableTile);
@@ -165,12 +206,13 @@ public class BroomBuilderAdapter : MonoBehaviour
     public void SetSelectedGlyph(Glyph glyph)
     {
         selectedGlyph = glyph;
+        Debug.Log("Selected glyph set");
     }
 
     // Called by the BroomBuilderController during Update
     public void UpdateHover(Vector3 mouseWorldPosition)
     {
-        if (selectedGlyph == null) return;
+        if (selectedGlyph == null || tilemap == null) return;
 
         // Convert world position to cell
         Vector3Int cellPosition = tilemap.WorldToCell(mouseWorldPosition);
@@ -211,6 +253,8 @@ public class BroomBuilderAdapter : MonoBehaviour
 
     private void ShowGlyphPlacementPreview(Hex targetHex)
     {
+        if (selectedGlyph == null || shapeGraph == null) return;
+
         // Clone and move the glyph shape
         Shape previewShape = CloneAndMoveShape(selectedGlyph.GetShape(), targetHex);
 
@@ -242,7 +286,13 @@ public class BroomBuilderAdapter : MonoBehaviour
 
     private void HandleTileClick(Vector3Int cellPosition)
     {
-        if (selectedGlyph == null) return;
+        if (selectedGlyph == null)
+        {
+            Debug.Log("Tile clicked but no glyph selected");
+            return;
+        }
+
+        Debug.Log("Tile clicked, attempting to place glyph");
 
         // Convert cell to hex
         Hex targetHex = BoardManipulationOddR.GetHexCoordinate(cellPosition);
@@ -255,6 +305,7 @@ public class BroomBuilderAdapter : MonoBehaviour
     {
         if (selectedGlyph != null)
         {
+            Debug.Log("Rotating glyph");
             // Rotate the glyph
             selectedGlyph.GetShape().rotateClockwise();
 
@@ -268,12 +319,20 @@ public class BroomBuilderAdapter : MonoBehaviour
 
     private void TryPlaceGlyphAt(Hex targetHex)
     {
+        if (selectedGlyph == null || shapeGraph == null)
+        {
+            Debug.LogError("Cannot place glyph - missing selectedGlyph or shapeGraph");
+            return;
+        }
+
         // Move the glyph shape to the target position
         Shape movedShape = CloneAndMoveShape(selectedGlyph.GetShape(), targetHex);
 
         // Check if it fits
         if (shapeGraph.willItFit(movedShape))
         {
+            Debug.Log("Placed glyph successfully at " + targetHex.ToString());
+
             // Place the glyph
             shapeGraph.addNewShape(movedShape);
             placedGlyphs.Add(selectedGlyph);
@@ -282,6 +341,10 @@ public class BroomBuilderAdapter : MonoBehaviour
 
             // Update visuals
             UpdateBoardVisuals();
+        }
+        else
+        {
+            Debug.Log("Glyph placement failed - doesn't fit");
         }
     }
 
@@ -306,8 +369,11 @@ public class BroomBuilderAdapter : MonoBehaviour
     {
         if (currentFrame != null && placedGlyphs.Count > 0)
         {
+            Debug.Log("Finalizing broom with " + placedGlyphs.Count + " glyphs");
             return new Broom(placedGlyphs.ToArray(), currentFrame);
         }
+
+        Debug.Log("Cannot finalize broom - missing frame or no glyphs placed");
         return null;
     }
 }

@@ -12,22 +12,26 @@ public class Broom
     {
     }
 
-    // public Broom(BroomShapeGraph myGraph, etc.)
-
     public Broom(Glyph[] g, BroomFrame myFrame)
     {
         glyphs = g;
-        graph = new BroomShapeGraph(frame.getShape(), glyphs);
         frame = myFrame;
-        setSumStats();
+        graph = new BroomShapeGraph(frame.getShape());
 
+        // Add all glyphs to the shape graph
+        foreach (var glyph in glyphs)
+        {
+            graph.addNewShape(glyph.GetShape());
+        }
+
+        setSumStats();
+        setWeightClass();
     }
 
     private void setSumStats()
     {
-
         StatBlock[] blocks = new StatBlock[glyphs.Length];
-        for(int i = 0; i < glyphs.Length; i++)
+        for (int i = 0; i < glyphs.Length; i++)
         {
             blocks[i] = glyphs[i].GetStatBlock();
         }
@@ -37,7 +41,7 @@ public class Broom
     private void setWeightClass()
     {
         weight = 0;
-        for(int i = 0; i < glyphs.Length; i++)
+        for (int i = 0; i < glyphs.Length; i++)
         {
             weight += glyphs[i].getWeight();
         }
@@ -45,11 +49,30 @@ public class Broom
         if (frame.getMaxWeight() < weight)
         {
             Console.WriteLine("Broom is too heavy to be possible!!!");
-            throw new Exception();
+            throw new Exception("Broom is too heavy to be possible!");
         }
 
         weightClass = frame.getWeightClass(weight);
     }
-    // Needs to hold Glyphs
-    // Holds a BroomShapeGraph to make sure the SHAPES of the Glyphs are good
+
+    // Add some helper methods for debugging
+    public int GetGlyphCount()
+    {
+        return glyphs != null ? glyphs.Length : 0;
+    }
+
+    public BroomFrame GetFrame()
+    {
+        return frame;
+    }
+
+    public StatBlock GetStats()
+    {
+        return sumStats;
+    }
+
+    public WeightClass GetWeightClass()
+    {
+        return weightClass;
+    }
 }

@@ -67,7 +67,8 @@ namespace Game.Ui
         private void OnCreateBoard(IBoard board)
         {
             CurrentBoard = board;
-            DrawPositions();
+            // DrawPositions();
+            // Uncomment for grid coordinates
         }
     }
 }
