@@ -122,8 +122,7 @@ public class BroomBuilderController : MonoBehaviour
             Hex[] triangleShapeHexes = new Hex[] { new Hex(0, 0, 0), new Hex(1, -1, 0), new Hex(1, 0, -1) };
 
             // Create a basic stat block
-            int[] statValues = new int[] { 1, 2, 1, 0, 0, 0, 0, 0 };
-            StatBlock stats = new StatBlock(statValues);
+            StatBlock stats = new StatBlock(1, 2, 1, 0, 0, 0, 0);
 
             // Create and add glyphs to the list
             try

@@ -1,0 +1,21 @@
+# Magic Broom Autobattler - Project Rules
+
+## Game Systems Architecture
+- **Hex System:** Use `HexBoardGame.Runtime` and `AxialCoord`. Avoid Unity's default Tilemap coordinate math for logic; use it only for visuals.
+- **Combat Logic:** All contests follow: Result = (AttackerStat - DefenderStat) + ExplodingDice - K. 
+- **Exploding Dice:** If a die rolls its maximum value, it rolls again and adds (Value - 1). 
+- **Stats:** Use the 7 Schools: Divination, Illusion, Enchantment, Evocation, Abjuration, Transmutation, Conjuration.
+
+## Coding Standards
+- **Serialization:** Prefer `[SerializeField] private` over `public` variables for Inspector references.
+- **Data:** Use `ScriptableObject` for "Templates" (Technology, Rune definitions) and standard C# classes for "Instances" (The specific Broom the player built).
+- **Naming:** Follow the existing `handle[Action]Clicked` pattern in Controllers.
+
+## Unity Specifics
+- **Version:** Unity 2022.3 LTS (Standard Pipeline).
+- **UI:** Mix of world-space Hexes and Screen-space Overlay for the Designer.
+
+## Workflow & State Management
+- At the end of every task or major code change, you MUST update `DEVELOPMENT_STATE.md`.
+- Summarize what was changed, what is currently broken, and what the immediate next step is.
+- Always read `DEVELOPMENT_STATE.md` at the start of a new chat to gain context.

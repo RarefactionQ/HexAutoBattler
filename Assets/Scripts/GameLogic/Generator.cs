@@ -33,9 +33,9 @@ public class Generator
 
         //Firebolt -- active spell
         Hex[] hexes = { new Hex(0, 0, 0), new Hex(-1, 0, 1), new Hex(-1, -1, 2)}; //This is a v
-        StatBlock block = new StatBlock(new[] { 0, 0, 0, 0, 0, 0, 0, 0 });
-        AttackSpell activeSpell = new AttackSpell(10, new StatBlock(new[] { 0, 0, 1, 0, 0, 0, 0, 0 }),
-            new StatBlock(new[] { 0, 1, 0, 0, 0, 0, 0, 0 }), 2, 1, 0, new Dice(10));
+        StatBlock block = new StatBlock(0, 0, 0, 0, 0, 0, 0);
+        AttackSpell activeSpell = new AttackSpell(10, new StatBlock(0, 0, 1, 0, 0, 0, 0),
+            new StatBlock(0, 1, 0, 0, 0, 0, 0), 2, 1, 0, new Dice(10));
 
         Glyph fireBoltGlyph = new Glyph(hexes, block, 10, 10, 10, activeSpell);
         Technology fireBoltTech = new Technology(new[] { infernoMagic, fireMagic, level1Magic, baseMagic }, 0, 1000, "fireBolt", 0,fireBoltGlyph);
@@ -43,7 +43,7 @@ public class Generator
 
         //Fire Mastery -- passive spell
         hexes = new Hex[] { new Hex(0, 0, 0), new Hex(-1, 0, 1), new Hex(-2, -0, 2) }; //This is a line
-        block = new StatBlock(new[] { 0, 0, 3, 0, 0, 0, 0, 0 });
+        block = new StatBlock(0, 0, 3, 0, 0, 0, 0);
         
         Glyph fireMasteryGlyph = new Glyph(hexes, block, 10, 10, 10);
         Technology fireMasteryTech = new Technology(new[] { infernoMagic, fireMagic, level1Magic, baseMagic }, 25, 1000, "fireMastery", 0, fireMasteryGlyph);
